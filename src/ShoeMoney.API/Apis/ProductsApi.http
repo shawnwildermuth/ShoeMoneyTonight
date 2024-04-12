@@ -1,0 +1,5 @@
+GET {{$projectUrl}}/api/products
+###
+GET {{$projectUrl}}/api/products/1
+###
+GET {{$projectUrl}}/api/products/bycategory/2

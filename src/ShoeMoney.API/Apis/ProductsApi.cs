@@ -17,30 +17,14 @@ public class ProductsApi : IApi
       .Produces<IEnumerable<Product>>()
       .ProducesProblem(500);
 
-    group.MapGet("/bycategory/{catid:int}", GetProductsByCategory)
-      .Produces<IEnumerable<Product>>()
-      .ProducesProblem(500);
-
     group.MapGet("{id:int}", GetProduct)
       .Produces<Product>()
       .ProducesProblem(404)
       .ProducesProblem(500);
   }
 
-  private async Task<IResult> GetProductsByCategory(ShoeContext context, int catId)
-  {
-    var results = await context.Products
-      .Where(p => p.CategoryId == catId)
-      .Include(p => p.Category)
-      .OrderBy(p => p.Title)
-      .ToListAsync();
 
-    if (!results.Any()) return NotFound();
-
-    return Ok(results);
-  }
-
-  private async Task<IResult> GetProduct(ShoeContext context, int id)
+  public static async Task<IResult> GetProduct(ShoeContext context, int id)
   {
     var result = await context.Products
       .Include(p => p.Category)
@@ -52,7 +36,7 @@ public class ProductsApi : IApi
     return Ok(result);
   }
 
-  private async Task<IResult> GetProducts(ShoeContext context)
+  public static async Task<IResult> GetProducts(ShoeContext context)
   {
     var results = await context.Products
       .Include(p => p.Category)

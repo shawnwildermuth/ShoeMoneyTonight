@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeMoney.Data;
 
@@ -11,9 +12,11 @@ using ShoeMoney.Data;
 namespace ShoeMoney.Migrations
 {
     [DbContext(typeof(ShoeContext))]
-    partial class ShoeContextModelSnapshot : ModelSnapshot
+    [Migration("20240413042837_OrderStatus")]
+    partial class OrderStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +48,6 @@ namespace ShoeMoney.Migrations
                     b.Property<string>("Line2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -59,10 +59,7 @@ namespace ShoeMoney.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("ShoeMoney.Data.Entities.Category", b =>
@@ -115,7 +112,12 @@ namespace ShoeMoney.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ShippingAddressId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShippingAddressId");
 
                     b.ToTable("Orders");
                 });
@@ -131,7 +133,7 @@ namespace ShoeMoney.Migrations
                     b.Property<float>("Discount")
                         .HasColumnType("real");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -150,40 +152,6 @@ namespace ShoeMoney.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem");
-                });
-
-            modelBuilder.Entity("ShoeMoney.Data.Entities.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(8,2)");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cvv")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Expiration")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("ShoeMoney.Data.Entities.Product", b =>
@@ -232,22 +200,20 @@ namespace ShoeMoney.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ShoeMoney.Data.Entities.Address", b =>
+            modelBuilder.Entity("ShoeMoney.Data.Entities.Order", b =>
                 {
-                    b.HasOne("ShoeMoney.Data.Entities.Order", null)
-                        .WithOne("ShippingAddress")
-                        .HasForeignKey("ShoeMoney.Data.Entities.Address", "OrderId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                    b.HasOne("ShoeMoney.Data.Entities.Address", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId");
+
+                    b.Navigation("ShippingAddress");
                 });
 
             modelBuilder.Entity("ShoeMoney.Data.Entities.OrderItem", b =>
                 {
                     b.HasOne("ShoeMoney.Data.Entities.Order", null)
                         .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("ShoeMoney.Data.Entities.Product", "Product")
                         .WithMany()
@@ -256,15 +222,6 @@ namespace ShoeMoney.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ShoeMoney.Data.Entities.Payment", b =>
-                {
-                    b.HasOne("ShoeMoney.Data.Entities.Order", null)
-                        .WithOne("Payment")
-                        .HasForeignKey("ShoeMoney.Data.Entities.Payment", "OrderId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ShoeMoney.Data.Entities.Product", b =>
@@ -281,10 +238,6 @@ namespace ShoeMoney.Migrations
             modelBuilder.Entity("ShoeMoney.Data.Entities.Order", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Payment");
-
-                    b.Navigation("ShippingAddress");
                 });
 #pragma warning restore 612, 618
         }

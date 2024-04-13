@@ -12,8 +12,10 @@ public class Order
   public string Contact { get; set; } = "";
   public string? Email { get; set; }
   public string? PhoneNumber { get; set; }
+  public OrderStatus OrderStatus { get; set; } = OrderStatus.New;
 
   public Address? ShippingAddress { get; set; }
+  public Payment? Payment { get; set; }
 
-  public virtual ICollection<OrderItem>? Items { get; set; }
+  public virtual ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
 }

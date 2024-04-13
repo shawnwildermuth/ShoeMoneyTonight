@@ -22,6 +22,13 @@ builder.Services.ConfigureHttpJsonOptions(options =>
   options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+builder.Services.AddCors(cfg => cfg.AddDefaultPolicy(bldr =>
+{
+  bldr.AllowAnyHeader();
+  bldr.AllowAnyOrigin();
+  bldr.AllowAnyMethod();
+}));
+
 var app = builder.Build();
 
 if (args is not null && args.Length > 0 && args[0] == "/seed")
@@ -34,7 +41,9 @@ if (args is not null && args.Length > 0 && args[0] == "/seed")
   seeder!.Seed();
 }
 
-app.MapGet("/", () => "Hello World!");
+app.UseCors();
+
+app.MapHealthChecks("/health");
 
 app.MapApis();
 

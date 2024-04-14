@@ -16,7 +16,7 @@
       </div>
     </header>
 
-    <main class="container mx-auto p-2 bg-base-100">
+    <main class="mx-auto p-2 bg-base-100">
       <router-view></router-view>
     </main>
   </div>

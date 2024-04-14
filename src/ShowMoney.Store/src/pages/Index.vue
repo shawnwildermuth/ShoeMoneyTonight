@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useCatalogStore } from '@/stores/catalog';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { money } from "@/filters";
 
 const catalogStore = useCatalogStore();
 
+const categorySelect = ref<HTMLSelectElement|null>(null);
+
 onMounted(async () => {
   await catalogStore.loadProducts();
+  await catalogStore.loadCategories();
 })
 
 function computePager(currentPage: number, totalPages: number): number[] {
@@ -25,27 +28,31 @@ function computePager(currentPage: number, totalPages: number): number[] {
 const pager = computed(() => computePager(catalogStore.currentPage, catalogStore.totalPages));
 
 async function loadPage(page: number) {
-  await catalogStore.loadProducts(page)
+  const cat: string = categorySelect.value?.value ?? "0";
+  if (cat === "0") {
+    await catalogStore.loadProducts(page);
+  } else {
+    await catalogStore.loadProductsByCategory(cat, page);
+  }
 }
 
 </script>
 
 <template>
   <div>
-    <div class="flex justify-end">
-      <select class="select input">
+    <div class="flex justify-end my-2">
+      <select class="select select-xs select-primary mr-1" ref="categorySelect" @change="loadPage(1)">
         <option value="0" selected>All</option>
-        <option value="1">Shoe</option>
-        <option value="2">Show</option>
+        <option v-for="c in catalogStore.categories" :value="c.id">{{ c.name }}</option>
       </select>
     </div>
-    <div class="grid gap-2 grid-cols-4">
+    <div class="grid gap-2 grid-cols-1 md:grid-cols-3 xl:grid-cols-6">
       <div v-for="p in catalogStore.products"
         class="card card-compact bg-base-100 shadow-xl">
         <figure><img :src="p.imageUrl!" :alt="p.title" /></figure>
         <div class="card-body">
           <h2 class="card-title">{{ p.title }}</h2>
-          <div class="flex gap-1 text-white">
+          <div class="flex flex-wrap gap-1 text-white">
             <div class="badge badge-ghost">{{ p.category?.name }}</div>
             <div class="badge badge-ghost">{{ p.color }}</div>
             <div class="badge badge-ghost">{{ p.gender }}</div>

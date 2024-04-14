@@ -49,7 +49,9 @@ public class CategoriesApi : IApi
 
     if (!results.Any()) return NotFound();
 
-    var count = await context.Products.CountAsync();
+    var count = await context.Products
+      .Where(p => p.CategoryId == id)
+      .CountAsync();
     var totalPages = double.Ceiling(count / ProductsApi.PAGE_SIZE);
 
     return Ok(new

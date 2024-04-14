@@ -1,6 +1,7 @@
 import type Product from "./Product";
 
 export default interface ProductResult {
-  totalPages: Number;
+  totalPages: number;
+  currentPage: number;
   results: Array<Product>
 }

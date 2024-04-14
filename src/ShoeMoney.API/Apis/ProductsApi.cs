@@ -36,7 +36,7 @@ public class ProductsApi : IApi
       .ToListAsync();
 
     var count = await context.Products.CountAsync();
-    var totalPages = double.Ceiling(count / PAGE_SIZE);
+    var totalPages = float.Ceiling((float)count / (float)PAGE_SIZE);
       
     return Ok(new
     {

@@ -9,15 +9,13 @@ namespace ShoeMoney.API.Apis;
 
 public class ProductsApi : IApi
 {
+  public const int PAGE_SIZE = 24;
+
   public void Register(IEndpointRouteBuilder builder)
   {
     var group = builder.MapGroup("/api/products");
 
     group.MapGet("", GetProducts)
-      .Produces<IEnumerable<Product>>()
-      .ProducesProblem(500);
-
-    group.MapGet("/bycategory/{catid:int}", GetProductsByCategory)
       .Produces<IEnumerable<Product>>()
       .ProducesProblem(500);
 
@@ -27,20 +25,28 @@ public class ProductsApi : IApi
       .ProducesProblem(500);
   }
 
-  private async Task<IResult> GetProductsByCategory(ShoeContext context, int catId)
+  public static async Task<IResult> GetProducts(ShoeContext context, 
+    int page = 1)
   {
     var results = await context.Products
-      .Where(p => p.CategoryId == catId)
       .Include(p => p.Category)
       .OrderBy(p => p.Title)
+      .Skip(PAGE_SIZE * (page - 1))
+      .Take(PAGE_SIZE)
       .ToListAsync();
 
-    if (!results.Any()) return NotFound();
-
-    return Ok(results);
+    var count = await context.Products.CountAsync();
+    var totalPages = float.Ceiling((float)count / (float)PAGE_SIZE);
+      
+    return Ok(new
+    {
+      currentPage = page,
+      totalPages,
+      results
+    });
   }
 
-  private async Task<IResult> GetProduct(ShoeContext context, int id)
+  public static async Task<IResult> GetProduct(ShoeContext context, int id)
   {
     var result = await context.Products
       .Include(p => p.Category)
@@ -52,13 +58,4 @@ public class ProductsApi : IApi
     return Ok(result);
   }
 
-  private async Task<IResult> GetProducts(ShoeContext context)
-  {
-    var results = await context.Products
-      .Include(p => p.Category)
-      .OrderBy(p => p.Title)
-      .ToListAsync();
-
-    return Ok(results);
-  }
 }

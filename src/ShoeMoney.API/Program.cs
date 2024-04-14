@@ -22,6 +22,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
   options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddCors(cfg => cfg.AddDefaultPolicy(bldr =>
 {
   bldr.AllowAnyHeader();

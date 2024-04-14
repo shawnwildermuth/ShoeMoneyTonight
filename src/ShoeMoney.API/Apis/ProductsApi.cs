@@ -9,6 +9,8 @@ namespace ShoeMoney.API.Apis;
 
 public class ProductsApi : IApi
 {
+  public const int PAGE_SIZE = 24;
+
   public void Register(IEndpointRouteBuilder builder)
   {
     var group = builder.MapGroup("/api/products");
@@ -23,6 +25,26 @@ public class ProductsApi : IApi
       .ProducesProblem(500);
   }
 
+  public static async Task<IResult> GetProducts(ShoeContext context, 
+    int page = 1)
+  {
+    var results = await context.Products
+      .Include(p => p.Category)
+      .OrderBy(p => p.Title)
+      .Skip(PAGE_SIZE * (page - 1))
+      .Take(PAGE_SIZE)
+      .ToListAsync();
+
+    var count = await context.Products.CountAsync();
+    var totalPages = double.Ceiling(count / PAGE_SIZE);
+      
+    return Ok(new
+    {
+      currentPage = page,
+      totalPages,
+      results
+    });
+  }
 
   public static async Task<IResult> GetProduct(ShoeContext context, int id)
   {
@@ -36,13 +58,4 @@ public class ProductsApi : IApi
     return Ok(result);
   }
 
-  public static async Task<IResult> GetProducts(ShoeContext context)
-  {
-    var results = await context.Products
-      .Include(p => p.Category)
-      .OrderBy(p => p.Title)
-      .ToListAsync();
-
-    return Ok(results);
-  }
 }

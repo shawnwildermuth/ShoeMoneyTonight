@@ -35,16 +35,28 @@ public class CategoriesApi : IApi
     return Ok(results);
   }
 
-  public static async Task<IResult> GetProductsByCategories(ShoeContext context, int id)
+  public static async Task<IResult> GetProductsByCategories(ShoeContext context, 
+    int id, 
+    int page = 1)
   {
     var results = await context.Products
       .Where(p => p.CategoryId == id)
       .Include(p => p.Category)
       .OrderBy(p => p.Title)
+      .Skip(ProductsApi.PAGE_SIZE * (page - 1))
+      .Take(ProductsApi.PAGE_SIZE)
       .ToListAsync();
 
     if (!results.Any()) return NotFound();
 
-    return Ok(results);
+    var count = await context.Products.CountAsync();
+    var totalPages = double.Ceiling(count / ProductsApi.PAGE_SIZE);
+
+    return Ok(new
+    {
+      currentPage = page,
+      totalPages,
+      results
+    });
   }
 }

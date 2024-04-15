@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useCatalogStore } from '@/stores/catalog';
+import { useCatalog } from '@/stores/catalog';
 import { computed, onMounted, ref } from 'vue';
 import { money } from "@/filters";
 
-const catalogStore = useCatalogStore();
+const catalogStore = useCatalog();
 
 const categorySelect = ref<HTMLSelectElement|null>(null);
 
@@ -64,7 +64,7 @@ async function loadPage(page: number) {
         </div>
       </div>
     </div>
-    <div class="flex justify-center p-2">
+    <div class="flex justify-center p-2" v-if="catalogStore.products">
       <div class="join">
         <button class="join-item btn btn-sm" @click="loadPage(catalogStore.currentPage - 1)"
           :class="{ 'btn-disabled': catalogStore.currentPage === 1 }"><chevron-left-icon /></button>

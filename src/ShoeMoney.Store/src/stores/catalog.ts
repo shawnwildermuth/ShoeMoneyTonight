@@ -37,7 +37,7 @@ async function loadCategories() {
   }
 }
 
-export const useCatalogStore = defineStore('catalog', () => {
+export const useCatalog = defineStore('catalog', () => {
   return {
     loadProducts,
     loadCategories,

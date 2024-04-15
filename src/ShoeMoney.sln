@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoeMoney.API", "ShoeMoney.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoeMoney.Common", "ShoeMoney.Common\ShoeMoney.Common.csproj", "{5E8433EA-028E-4063-8429-9CCA22D63AC3}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "showmoney.store", "ShowMoney.Store\showmoney.store.esproj", "{3C294613-36C6-4254-B4EB-2F043155E4A7}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "shoemoney.store", "ShoeMoney.Store\shoemoney.store.esproj", "{76D72851-098B-427B-B696-D7E44F56804E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,12 @@ Global
 		{5E8433EA-028E-4063-8429-9CCA22D63AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E8433EA-028E-4063-8429-9CCA22D63AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E8433EA-028E-4063-8429-9CCA22D63AC3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C294613-36C6-4254-B4EB-2F043155E4A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C294613-36C6-4254-B4EB-2F043155E4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C294613-36C6-4254-B4EB-2F043155E4A7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{3C294613-36C6-4254-B4EB-2F043155E4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C294613-36C6-4254-B4EB-2F043155E4A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C294613-36C6-4254-B4EB-2F043155E4A7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{76D72851-098B-427B-B696-D7E44F56804E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76D72851-098B-427B-B696-D7E44F56804E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76D72851-098B-427B-B696-D7E44F56804E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{76D72851-098B-427B-B696-D7E44F56804E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76D72851-098B-427B-B696-D7E44F56804E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76D72851-098B-427B-B696-D7E44F56804E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

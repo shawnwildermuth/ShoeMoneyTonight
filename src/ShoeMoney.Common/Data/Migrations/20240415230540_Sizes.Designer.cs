@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeMoney.Data;
 
@@ -11,9 +12,11 @@ using ShoeMoney.Data;
 namespace ShoeMoney.Migrations
 {
     [DbContext(typeof(ShoeContext))]
-    partial class ShoeContextModelSnapshot : ModelSnapshot
+    [Migration("20240415230540_Sizes")]
+    partial class Sizes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

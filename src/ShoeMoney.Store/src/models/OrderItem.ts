@@ -8,4 +8,6 @@ export default interface OrderItem {
   quantity: number;
   discount: number;
   orderId: number;
+  size: string | null;
+  width: string | null;
 }

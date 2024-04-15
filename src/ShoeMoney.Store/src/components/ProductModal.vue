@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-import { type Product } from '@/models';
+import { type OrderItem, type Product } from '@/models';
 import { ref, type PropType } from 'vue';
 import { money } from "@/filters";
+import { useCart } from '@/stores/cart';
+
+const cart = useCart();
 
 const product = ref<Product>();
 
@@ -38,6 +41,21 @@ const widths = [
  ["H", "extra-wide"]
 ]
 
+const item = ref({
+  size: "11",
+  width: "E",
+  quantity: 1
+} as OrderItem);
+
+function buy() {
+  item.value.productId = product.value!.id;
+  item.value.price = product.value!.price;
+  item.value.discount = 0;
+  cart.add(item.value);
+  theDialog.value?.close();
+
+}
+
 defineExpose({
   showModal
 });
@@ -63,20 +81,20 @@ defineExpose({
             </div>
             <div class="selection mt-4">
               <div>Quantity</div>
-              <select>
+              <select v-model="item.quantity">
                 <option v-for="num in [...Array(100).keys()].slice(1, 100)"
-                  value="num">{{ num }}</option>
+                  :value="num">{{ num }}</option>
               </select>
             </div>
             <div class="selection">
               <div>Size</div>
-              <select>
+              <select  v-model="item.size">
                 <option v-for="s in sizes" :value="s">{{ s }}</option>
               </select>
             </div>
             <div class="selection">
               <div>Width</div>
-              <select>
+              <select  v-model="item.width">
                 <option v-for="w in widths" :value="w[0]">{{ `${w[0]} (${w[1]})` }}</option>
               </select>
             </div>
@@ -86,8 +104,8 @@ defineExpose({
         </div>
       </div>
       <div class="modal-action">
-        <div class="flex">
-          <button class="btn btn-success"><cart-icon /> Add to Cart</button>
+        <div class="flex">        
+          <button @click="buy" class="btn btn-success"><cart-icon /> Add to Cart</button>
         </div>
       </div>
     </div>

@@ -19,11 +19,14 @@ async function _loadProducts(url: string) {
     currentPage.value = result.currentPage;
     totalPages.value = result.totalPages;
   }
-
 }
 
 async function loadProducts(page: number = 1) {
   await _loadProducts(`products?page=${page}`);
+}
+
+async function loadProduct(productId: number) {
+  return await http.get<Product>(`products/${productId}`);
 }
 
 async function loadProductsByCategory(cat: string, page: number = 1) {
@@ -40,6 +43,7 @@ async function loadCategories() {
 export const useCatalog = defineStore('catalog', () => {
   return {
     loadProducts,
+    loadProduct,
     loadCategories,
     loadProductsByCategory,
     products,

@@ -12,6 +12,11 @@ export function money(value: number | string) {
   }
 }
 
+export function percentage(value: number | string) {
+  const theValue = typeof value === "number"? value : Number(value);
+  return `${theValue.toFixed(2)}%`;
+}
+
 export function shortDate(value: Date | string | null) {
   try {
     if (value) {

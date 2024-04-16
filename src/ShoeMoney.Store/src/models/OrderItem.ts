@@ -1,6 +1,6 @@
-import type Product from "./Product";
+import {type Product} from "./Product";
 
-export default interface OrderItem {
+export interface OrderItem {
   id: number;
   productId: number;
   product: Product | null;

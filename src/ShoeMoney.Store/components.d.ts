@@ -8,11 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BackIcon: typeof import('./src/components/icons/BackIcon.vue')['default']
+    CalendarIcon: typeof import('./src/components/icons/CalendarIcon.vue')['default']
     CartIcon: typeof import('./src/components/icons/CartIcon.vue')['default']
     CheckIcon: typeof import('./src/components/icons/CheckIcon.vue')['default']
     ChevronLeftIcon: typeof import('./src/components/icons/ChevronLeftIcon.vue')['default']
     ChevronRightIcon: typeof import('./src/components/icons/ChevronRightIcon.vue')['default']
     CloseIcon: typeof import('./src/components/icons/CloseIcon.vue')['default']
+    CreditCardIcon: typeof import('./src/components/icons/CreditCardIcon.vue')['default']
     DeleteIcon: typeof import('./src/components/icons/DeleteIcon.vue')['default']
     DoubleChevronIcon: typeof import('./src/components/icons/DoubleChevronIcon.vue')['default']
     EditIcon: typeof import('./src/components/icons/EditIcon.vue')['default']

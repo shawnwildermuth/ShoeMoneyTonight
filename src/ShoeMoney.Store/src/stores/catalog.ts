@@ -2,7 +2,7 @@ import { useHttp } from '@/composables/http';
 import type { Category, Product } from '@/models';
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue';
-import type ProductResult from '@/models/ProductResult';
+import { type ProductResult } from '@/models/ProductResult';
 
 const http = useHttp();
 

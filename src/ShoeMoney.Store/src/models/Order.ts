@@ -1,10 +1,10 @@
-import type Address from "./Address";
-import type OrderItem from "./OrderItem";
+import type { Address } from "./Address";
+import type { OrderItem } from "./OrderItem";
 import type { OrderStatus } from "./OrderStatus";
 import type { OrderType } from "./OrderType";
-import type Payment from "./Payment";
+import type { Payment } from "./Payment";
 
-export default interface Order {
+export interface Order {
   id: number;
   orderDate: string;
   notes: string | null;

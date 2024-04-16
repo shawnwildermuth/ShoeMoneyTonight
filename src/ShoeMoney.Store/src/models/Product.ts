@@ -1,6 +1,6 @@
-import type Category from "./Category";
+import { type Category } from "./Category";
 
-export default interface Product {
+export interface Product {
   id: number;
   gender: string | null;
   categoryId: number;

@@ -1,6 +1,6 @@
-import type Product from "./Product";
+import type { Product } from "./Product";
 
-export default interface ProductResult {
+export interface ProductResult {
   totalPages: number;
   currentPage: number;
   results: Array<Product>

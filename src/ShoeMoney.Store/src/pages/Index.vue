@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { useCatalogStore } from '@/stores/catalog';
+import { useCatalog } from '@/stores/catalog';
 import { computed, onMounted, ref } from 'vue';
 import { money } from "@/filters";
+import ProductModal from "@/components/ProductModal.vue";
+import type { Product } from '@/models';
 
-const catalogStore = useCatalogStore();
+const catalogStore = useCatalog();
 
 const categorySelect = ref<HTMLSelectElement|null>(null);
+const productModal = ref<typeof ProductModal>();
 
 onMounted(async () => {
   await catalogStore.loadProducts();
@@ -36,10 +39,15 @@ async function loadPage(page: number) {
   }
 }
 
+function purchase(product: Product) {
+  productModal.value?.showModal(product);
+}
+
 </script>
 
 <template>
   <div>
+    <product-modal ref="productModal" />
     <div class="flex justify-end my-2">
       <select class="select select-xs select-primary mr-1" ref="categorySelect" @change="loadPage(1)">
         <option value="0" selected>All</option>
@@ -59,12 +67,12 @@ async function loadPage(page: number) {
             <div class="badge badge-ghost">{{ p.usage }}</div>
           </div>
           <div class="card-actions justify-end">
-            <button class="btn btn-success">{{ money(p.price) }}</button>
+            <button class="btn btn-success" @click="purchase(p)">{{ money(p.price) }}</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="flex justify-center p-2">
+    <div class="flex justify-center p-2" v-if="catalogStore.products">
       <div class="join">
         <button class="join-item btn btn-sm" @click="loadPage(catalogStore.currentPage - 1)"
           :class="{ 'btn-disabled': catalogStore.currentPage === 1 }"><chevron-left-icon /></button>

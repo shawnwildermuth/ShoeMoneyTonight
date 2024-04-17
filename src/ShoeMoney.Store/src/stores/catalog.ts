@@ -2,7 +2,7 @@ import { useHttp } from '@/composables/http';
 import type { Category, Product } from '@/models';
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue';
-import type ProductResult from '@/models/ProductResult';
+import { type ProductResult } from '@/models/ProductResult';
 
 const http = useHttp();
 
@@ -19,11 +19,14 @@ async function _loadProducts(url: string) {
     currentPage.value = result.currentPage;
     totalPages.value = result.totalPages;
   }
-
 }
 
 async function loadProducts(page: number = 1) {
   await _loadProducts(`products?page=${page}`);
+}
+
+async function loadProduct(productId: number) {
+  return await http.get<Product>(`products/${productId}`);
 }
 
 async function loadProductsByCategory(cat: string, page: number = 1) {
@@ -37,9 +40,10 @@ async function loadCategories() {
   }
 }
 
-export const useCatalogStore = defineStore('catalog', () => {
+export const useCatalog = defineStore('catalog', () => {
   return {
     loadProducts,
+    loadProduct,
     loadCategories,
     loadProductsByCategory,
     products,

@@ -22,19 +22,19 @@ async function _loadProducts(url: string) {
 }
 
 async function loadProducts(page: number = 1) {
-  await _loadProducts(`products?page=${page}`);
+  await _loadProducts(`/api/products?page=${page}`);
 }
 
 async function loadProduct(productId: number) {
-  return await http.get<Product>(`products/${productId}`);
+  return await http.get<Product>(`/api/products/${productId}`);
 }
 
 async function loadProductsByCategory(cat: string, page: number = 1) {
-  await _loadProducts(`categories/${cat}/products?page=${page}`);
+  await _loadProducts(`/api/categories/${cat}/products?page=${page}`);
 }
 
 async function loadCategories() {
-  const result = await http.get<Array<Category>>(`categories`);
+  const result = await http.get<Array<Category>>(`/api/categories`);
   if (result) {
     categories.splice(0, categories.length, ...result);
   }

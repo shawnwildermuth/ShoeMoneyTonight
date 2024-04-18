@@ -76,6 +76,12 @@ public class OrdersApi : IApi
 
   public static async Task<IResult> CreateOrder(ShoeContext context, Order model)
   {
+    // Remove the products so we don't try to insert them
+    foreach (var item in model.Items)
+    {
+      if (item.Product is not null) item.Product = null;
+    }
+
     context.Add(model);
 
     if (await context.SaveChangesAsync() > 0)

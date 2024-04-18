@@ -3,6 +3,9 @@ import { createEmptyOrder } from '@/models/Order';
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue';
 import { useStore } from '.';
+import { useHttp } from '@/composables/http';
+
+const http = useHttp();
 
 const items = ref<Array<OrderItem>>([
   {
@@ -45,9 +48,7 @@ function processCheckout() {
 }
 
 function isOrderValid() {
-  const store = useStore();
   if (!order.value) {
-    store.error = "Order is missing. Please contact the developer.";
     return false;
   }
   return true;
@@ -71,7 +72,11 @@ function processCustomer() {
 
 async function processOrder() {
   if (!isOrderValid()) return false;
-  return true;
+
+  const result = await http.post("/api/orders", order.value);
+  if (result) {
+    order.value = undefined;
+  }
 }
 
 export const useCart = defineStore('cart', () => {

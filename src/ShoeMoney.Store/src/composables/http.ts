@@ -1,15 +1,14 @@
 import { useStore } from "@/stores";
 import axios, { type Axios } from "axios";
 
-const store = useStore();
-
 const instance: Axios = axios.create({
-  baseURL: "http://localhost:8080/api"
+  baseURL: "http://localhost:8080"
 });
 
 async function get<T>(url: string) {
+  const store = useStore();
   try {
-    store.startRequest();
+    const store = useStore();
     const result = await instance.get<T>(url);
     if (result.status === 200) {
       return result.data;
@@ -24,8 +23,28 @@ async function get<T>(url: string) {
   }
 } 
 
+async function post<T>(url: string, content: T) {
+  const store = useStore();
+  try {
+    store.startRequest();
+    const result = await instance.post<T>(url, content);
+
+    if (result.status === 201) {
+      return result.data;
+    } else {
+      store.error = `Failed to execute POST: ${url}`;
+      return null;
+    }
+  } catch (e) {
+    store.error = `Error during POST: ${url}`;
+  }finally {
+    store.endRequest();
+  }
+} 
+
 export function useHttp() {
   return {
-    get
+    get,
+    post
   }
 }

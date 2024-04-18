@@ -19,11 +19,11 @@ export function createEmptyPayment() {
     paymentType: PaymentType.CreditCard,
     orderId: 0,
     amount: 0,
-    cardNumber: "",
-    cvv: "",
-    expiration: "",
-    cardholder: "",
-    postalCode: ""
+    cardNumber: "4000 0000 0000 0000",
+    cvv: "123",
+    expiration: "04/26",
+    cardholder: "Shawn Wildermuth",
+    postalCode: "10101"
   }
 }
 

@@ -50,14 +50,15 @@ function confirm() {
 
 <template>
   <div class="w-full sm:w-4/5 lg:w-2/3 mx-auto">
-    <div class="flex justify-center mb-8">
-      <ul class="steps">
-        <li class="step step-primary">Checkout</li>
-        <li class="step step-primary">Customer Information</li>
-        <li class="step step-primary">Payment</li>
-        <li class="step">Confirmation</li>
-      </ul>
-    </div>
+    <checkout-progress :stage="3" />
+    <div class="flex justify-end gap-2 mt-8">
+        <button @click="router.back()"
+          class="whitespace-nowrap btn btn-sm btn-ghost"><chevron-left-icon />
+          Back</button>
+        <button @click="confirm"
+          class="whitespace-nowrap btn btn-sm btn-success"><chevron-right-icon />
+          Next</button>
+      </div>
     <div @focusout="handleFocusOut">
       <div class="text-lg font-bold mb-4">Payment Information</div>
       <div class="border rounded border-slate-500/50 p-2">
@@ -169,14 +170,6 @@ function confirm() {
             :class="{ error: payErrors?.postalCode }" placeholder="10101" />
           <zod-error :errors="payErrors?.postalCode" />
         </label>
-      </div>
-      <div class="flex justify-end gap-2 mt-8">
-        <button @click="router.back()"
-          class="whitespace-nowrap btn btn-ghost"><chevron-left-icon />
-          Back</button>
-        <button @click="confirm"
-          class="whitespace-nowrap btn btn-success"><chevron-right-icon />
-          Next</button>
       </div>
     </div>
   </div>

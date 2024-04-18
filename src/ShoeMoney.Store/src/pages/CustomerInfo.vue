@@ -43,15 +43,15 @@ function save() {
 
 <template>
   <div class="w-full sm:w-4/5 lg:w-2/3 mx-auto">
-    <div class="flex justify-center mb-8">
-      <ul class="steps">
-        <li class="step step-primary">Checkout</li>
-        <li class="step step-primary">Customer Information</li>
-        <li class="step">Payment</li>
-        <li class="step">Confirmation</li>
-      </ul>
-    </div>
-    <div @focusout="handleFocusOut">
+    <checkout-progress :stage="2" />
+    <div class="flex justify-end gap-2 mb-4">
+        <button @click="router.back()"
+          class="whitespace-nowrap btn btn-sm btn-ghost"><chevron-left-icon />
+          Back</button>
+        <button @click="save"
+          class="whitespace-nowrap btn btn-sm btn-success"><chevron-right-icon />
+          Next</button>
+      </div>    <div @focusout="handleFocusOut">
       <div class="border rounded border-slate-500/50 p-2" v-if="cart.order">
         <div class="bg-base-100 -mt-5 mb-2 w-40">Customer Information</div>
         <label class="input-label">
@@ -94,14 +94,7 @@ function save() {
           <zod-error :errors="errors?.notes" />
         </label>
       </div>
-      <div class="flex justify-end gap-2 mt-8">
-        <button @click="router.back()"
-          class="whitespace-nowrap btn btn-ghost"><chevron-left-icon />
-          Back</button>
-        <button @click="save"
-          class="whitespace-nowrap btn btn-success"><chevron-right-icon />
-          Next</button>
-      </div>
+
     </div>
   </div>
 </template>

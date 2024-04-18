@@ -17,14 +17,14 @@ export function createEmptyAddress() {
   return {
     id: 0,
     orderId: 0,
-    attentionTo: "",
-    line1: "",
+    attentionTo: "Shawn",
+    line1: "123 Main Street",
     line2: "",
-    cityTown: "",
-    stateProvince: "",
-    postalCode: "",
-    country: "",
-    shippingPhoneNumber: ""
+    cityTown: "Atlanta",
+    stateProvince: "GA",
+    postalCode: "30303",
+    country: "USA",
+    shippingPhoneNumber: "+1 404 555 1212"
   }
 }
 

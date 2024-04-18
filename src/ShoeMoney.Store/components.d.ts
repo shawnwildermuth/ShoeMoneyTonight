@@ -26,5 +26,6 @@ declare module 'vue' {
     RightChevronIcon: typeof import('./src/components/icons/RightChevronIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ZodError: typeof import('./src/components/ZodError.vue')['default']
   }
 }

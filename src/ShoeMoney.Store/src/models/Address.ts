@@ -13,12 +13,27 @@ export interface Address {
   shippingPhoneNumber: string | null;
 }
 
+export function createEmptyAddress() {
+  return {
+    id: 0,
+    orderId: 0,
+    attentionTo: "",
+    line1: "",
+    line2: "",
+    cityTown: "",
+    stateProvince: "",
+    postalCode: "",
+    country: "",
+    shippingPhoneNumber: ""
+  }
+}
+
 export const AddressSchema = object({
   line1: string().min(1, "Required"),
   cityTown: string().min(1, "Required"),
   stateProvince: string().min(1, "Required"),
   postalCode: string().min(1, "Required"),
-  shippingPhoneNumber: string().min(1, "Required")
+  shippingPhoneNumber: string().min(1, "Required"),
 });
 
-export type PaymentErrors = inferFormattedError<typeof AddressSchema>;
+export type AddressErrors = inferFormattedError<typeof AddressSchema>;

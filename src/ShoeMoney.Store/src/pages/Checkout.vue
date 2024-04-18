@@ -36,6 +36,12 @@ function remove(item: OrderItem) {
 
 const total = computed(() => sum(cart.items, i => lineTotal(i)));
 
+function save() {
+  if (cart.processCheckout()) {
+    router.push("/customerInfo");
+  }
+}
+
 </script>
 
 <template>
@@ -43,6 +49,7 @@ const total = computed(() => sum(cart.items, i => lineTotal(i)));
     <div class="flex justify-center mb-8">
       <ul class="steps">
         <li class="step step-primary">Checkout</li>
+        <li class="step">Customer Information</li>
         <li class="step">Payment</li>
         <li class="step">Confirmation</li>
       </ul>
@@ -83,7 +90,7 @@ const total = computed(() => sum(cart.items, i => lineTotal(i)));
           include Taxes</div>
           <div class="flex justify-end gap-2">
             <button @click="router.back()" class="whitespace-nowrap btn btn-ghost"><chevron-left-icon /> Back</button>
-            <router-link to="/payment" class="whitespace-nowrap btn btn-success"><chevron-right-icon /> Next</router-link>
+            <button @click="save" class="whitespace-nowrap btn btn-success"><chevron-right-icon /> Next</button>
           </div>
       </div>
     </div>

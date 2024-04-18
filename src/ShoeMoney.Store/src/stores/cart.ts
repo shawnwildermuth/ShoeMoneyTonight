@@ -1,6 +1,8 @@
-import type { OrderItem } from '@/models';
+import type { Address, Order, OrderItem, Payment } from '@/models';
+import { createEmptyOrder } from '@/models/Order';
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue';
+import { useStore } from '.';
 
 const items = ref<Array<OrderItem>>([
   {
@@ -25,14 +27,62 @@ const items = ref<Array<OrderItem>>([
     orderId: 0
   }]);
 
+const order = ref<Order>();
 
 function add(item: OrderItem) {
   items.value.push(item);
 }
 
+function processCheckout() {
+  order.value = createEmptyOrder();
+
+  if (items.value.length < 1) return false;
+
+  // Add them every time we confirm the order
+  order.value.items.splice(0, order.value.items.length, ...items.value)
+
+  return true;
+}
+
+function isOrderValid() {
+  const store = useStore();
+  if (!order.value) {
+    store.error = "Order is missing. Please contact the developer.";
+    return false;
+  }
+  return true;
+}
+
+function processPayment(payment: Payment, address: Address) {
+  if (!isOrderValid()) return false;
+
+  if (!payment || !address) return false;
+
+  order.value!.payment = payment;
+  order.value!.shippingAddress = address;
+  return true;
+}
+
+function processCustomer() {
+  if (!isOrderValid()) return false;
+  // NOOP as we are just setting the values on the order directly.
+  return true;
+}
+
+async function processOrder() {
+  if (!isOrderValid()) return false;
+  return true;
+}
+
 export const useCart = defineStore('cart', () => {
   return {
     items,
-    add
+    order,
+    add,
+    isOrderValid,
+    processCheckout,
+    processCustomer,
+    processPayment,
+    processOrder,
   };
 })

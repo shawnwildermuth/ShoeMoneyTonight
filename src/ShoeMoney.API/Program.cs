@@ -8,10 +8,12 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ShoeContext>(opt =>
-{
-  opt.UseSqlServer(builder.Configuration.GetConnectionString("ShoeMoneyDb"));
-});
+builder.AddSqlServerDbContext<ShoeContext>("ShoeMoneyDb");
+
+//builder.Services.AddDbContext<ShoeContext>(opt =>
+//{
+//  opt.UseSqlServer(builder.Configuration.GetConnectionString("ShoeMoneyDb"));
+//});
 
 builder.Services.AddTransient<Seeder>();
 

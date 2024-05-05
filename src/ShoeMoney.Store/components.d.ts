@@ -11,6 +11,7 @@ declare module 'vue' {
     CalendarIcon: typeof import('./src/components/icons/CalendarIcon.vue')['default']
     CartIcon: typeof import('./src/components/icons/CartIcon.vue')['default']
     CheckIcon: typeof import('./src/components/icons/CheckIcon.vue')['default']
+    CheckoutProgress: typeof import('./src/components/CheckoutProgress.vue')['default']
     ChevronLeftIcon: typeof import('./src/components/icons/ChevronLeftIcon.vue')['default']
     ChevronRightIcon: typeof import('./src/components/icons/ChevronRightIcon.vue')['default']
     CloseIcon: typeof import('./src/components/icons/CloseIcon.vue')['default']
@@ -26,5 +27,6 @@ declare module 'vue' {
     RightChevronIcon: typeof import('./src/components/icons/RightChevronIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ZodError: typeof import('./src/components/ZodError.vue')['default']
   }
 }

@@ -33,14 +33,17 @@ builder.Services.AddCors(cfg => cfg.AddDefaultPolicy(bldr =>
 
 var app = builder.Build();
 
-if (args is not null && args.Length > 0 && args[0] == "/seed")
+if (builder.Environment.IsDevelopment())
 {
-  var scopeFactory = app.Services.GetService<IServiceScopeFactory>();
-  using var scope = scopeFactory!.CreateScope();
+  var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+  using var scope = scopeFactory.CreateScope();
+
+  var ctx = scope.ServiceProvider.GetRequiredService<ShoeContext>();
+  ctx.Database.EnsureCreated();
 
   // Enqueue the seeding
-  var seeder = scope.ServiceProvider.GetService<Seeder>();
-  seeder!.Seed();
+  var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
+  seeder.Seed();
 }
 
 app.UseCors();

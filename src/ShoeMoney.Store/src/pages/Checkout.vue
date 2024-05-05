@@ -36,18 +36,30 @@ function remove(item: OrderItem) {
 
 const total = computed(() => sum(cart.items, i => lineTotal(i)));
 
+function save() {
+  if (cart.processCheckout()) {
+    router.push("/customerInfo");
+  }
+}
+
 </script>
 
 <template>
   <div>
-    <div class="flex justify-center mb-8">
-      <ul class="steps">
-        <li class="step step-primary">Checkout</li>
-        <li class="step">Payment</li>
-        <li class="step">Confirmation</li>
-      </ul>
-    </div>
+    <checkout-progress :stage="1" />
     <div class="w-full sm:w-4/5 lg:w-2/3 mx-auto ">
+      <div class="mb-4">
+        <div class="italic text-sm text-slate-500">Free Shipping and Prices
+          include Taxes</div>
+        <div class="flex justify-end gap-2">
+          <button @click="router.back()"
+            class="whitespace-nowrap btn-sm btn btn-ghost"><chevron-left-icon />
+            Back</button>
+          <button @click="save"
+            class="whitespace-nowrap btn btn-sm btn-success"><chevron-right-icon />
+            Next</button>
+        </div>
+      </div>
       <div class="rounded shadow-xl p-1">
         <table class="table table-sm table-fixed">
           <thead>
@@ -77,14 +89,6 @@ const total = computed(() => sum(cart.items, i => lineTotal(i)));
             </tr>
           </thead>
         </table>
-      </div>
-      <div class="mt-4">
-        <div class="italic text-sm text-slate-500">Free Shipping and Prices
-          include Taxes</div>
-          <div class="flex justify-end gap-2">
-            <button @click="router.back()" class="whitespace-nowrap btn btn-ghost"><chevron-left-icon /> Back</button>
-            <router-link to="/payment" class="whitespace-nowrap btn btn-success"><chevron-right-icon /> Next</router-link>
-          </div>
       </div>
     </div>
   </div>

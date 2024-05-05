@@ -1,0 +1,44 @@
+{
+  "resources": {
+    "theApi": {
+      "type": "project.v0",
+      "path": "../ShoeMoney.API/ShoeMoney.API.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "store": {
+      "type": "dockerfile.v0",
+      "path": "../shoemoney.store/Dockerfile",
+      "context": "../shoemoney.store/",
+      "env": {
+        "NODE_ENV": "production",
+        "services__theApi__http__0": "{theApi.bindings.http.url}",
+        "services__theApi__https__0": "{theApi.bindings.https.url}",
+        "PORT": "{store.bindings.http.targetPort}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 5173
+        }
+      }
+    }
+  }
+}

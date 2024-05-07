@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddRedisClient("catalogCache");
+builder.AddRabbitMQClient("orderQueue");
 builder.Services.AddDbContext<ShoeContext>(opt =>
 {
   opt.UseSqlServer(builder.Configuration.GetConnectionString("ShoeMoneyDb"));

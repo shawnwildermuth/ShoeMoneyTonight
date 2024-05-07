@@ -8,6 +8,10 @@ using WilderMinds.MinimalApis.FluentValidation;
 using EFCore.BulkExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Mapster;
+using Microsoft.AspNetCore.Connections;
+using RabbitMQ.Client;
+using System.Text.Json;
+using System.Text;
 
 namespace ShoeMoney.API.Apis;
 
@@ -70,26 +74,24 @@ public class OrdersApi : IApi
       .FirstOrDefaultAsync();
 
     if (order is null) return NotFound();
-
     return Ok(order);
   }
 
-  public static async Task<IResult> CreateOrder(ShoeContext context, Order model)
+  public static IResult CreateOrder(ShoeContext context, 
+    ConnectionFactory connectionFactory, 
+    Order model)
   {
-    // Remove the products so we don't try to insert them
-    foreach (var item in model.Items)
-    {
-      if (item.Product is not null) item.Product = null;
-    }
 
-    context.Add(model);
+    var json = JsonSerializer.Serialize(model);
 
-    if (await context.SaveChangesAsync() > 0)
-    {
-      return Created($"/api/orders/{model.Id}", model);
-    }
+    using var conn = connectionFactory.CreateConnection();
+    using var channel = conn.CreateModel();
+    channel.QueueDeclare(ShoeConstants.OrderQueueName, true);
+    var body = Encoding.UTF32.GetBytes(json);
+    channel.BasicPublish("", ShoeConstants.OrderQueueName, null, body);
 
-    return BadRequest();
+    return Ok();
+
   }
 
   public static async Task<IResult> UpdateOrder(ShoeContext context, int id, Order model)

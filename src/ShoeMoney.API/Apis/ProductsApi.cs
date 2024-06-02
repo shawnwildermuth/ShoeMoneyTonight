@@ -3,7 +3,9 @@ using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
 using WilderMinds.MinimalApiDiscovery;
 
-using static Microsoft.AspNetCore.Http.TypedResults;
+using static 
+  Microsoft.AspNetCore.Http
+  .TypedResults;
 
 namespace ShoeMoney.API.Apis;
 

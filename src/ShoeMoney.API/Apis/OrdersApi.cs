@@ -4,7 +4,7 @@ using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
 
 using WilderMinds.MinimalApiDiscovery;
-using WilderMinds.MinimalApis.FluentValidation;
+using MinimalApis.FluentValidation;
 using EFCore.BulkExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Mapster;

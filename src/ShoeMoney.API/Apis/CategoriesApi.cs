@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Transactions;
+
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
@@ -24,6 +27,10 @@ public class CategoriesApi : IApi
       .ProducesProblem(404)
       .ProducesProblem(500);
 
+    group.MapPost("test", CreateCategory)
+      .Produces(200)
+      .ProducesProblem(404)
+      .ProducesProblem(500);
   }
 
   public static async Task<IResult> GetCategories(ShoeContext context)
@@ -35,8 +42,8 @@ public class CategoriesApi : IApi
     return Ok(results);
   }
 
-  public static async Task<IResult> GetProductsByCategories(ShoeContext context, 
-    int id, 
+  public static async Task<IResult> GetProductsByCategories(ShoeContext context,
+    int id,
     int page = 1)
   {
     var results = await context.Products
@@ -60,5 +67,37 @@ public class CategoriesApi : IApi
       totalPages,
       results
     });
+  }
+
+  public static async Task<IResult> CreateCategory(ShoeContext context)
+  {
+    await context.Database.BeginTransactionAsync();
+
+    context.Categories.Add(new Category()
+    {
+      Name = "Foo bar"
+    });
+
+    using var conn = new SqlConnection(context.Database.GetConnectionString());
+    using var cmd = conn.CreateCommand();
+    {
+      var qry = """
+      INSERT INTO Category (Name)
+      VALUES ('Quux')
+      """;
+
+      conn.Open();
+      cmd.CommandText = qry;
+      cmd.ExecuteNonQuery();
+      conn.Close();
+    }
+
+    await context.SaveChangesAsync();
+
+    //await context.Database.CommitTransactionAsync();
+
+    await context.Database.RollbackTransactionAsync();
+
+    return Ok();
   }
 }

@@ -5,6 +5,7 @@ using ShoeMoney.Data.Seeding;
 using FluentValidation;
 using ShoeMoney.Validators;
 using System.Text.Json.Serialization;
+using ShoeMoney;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 {
   options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+builder.Configure();
 
 builder.Services.AddHealthChecks();
 

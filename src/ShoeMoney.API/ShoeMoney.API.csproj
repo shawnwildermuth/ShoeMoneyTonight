@@ -7,17 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.0.0-preview.6.24214.1" />
-    <PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.0-preview.6.24214.1" />
+    <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.0.1" />
+    <PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.1" />
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.EFCore" Version="5.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
-    <PackageReference Include="MinimalApis.FluentValidation" Version="1.0.0-beta" />
-    <PackageReference Include="WilderMinds.MinimalApiDiscovery" Version="1.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+    <PackageReference Include="MinimalApis.Discovery" Version="1.0.7" />
+    <PackageReference Include="MinimalApis.FluentValidation" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
-using WilderMinds.MinimalApiDiscovery;
+using MinimalApis.Discovery;
 
 using static Microsoft.AspNetCore.Http.TypedResults;
 

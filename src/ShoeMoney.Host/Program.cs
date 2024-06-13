@@ -4,10 +4,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var connectionString = builder.AddConnectionString("ShoeMoneyDb");
 var queue = builder.AddRabbitMQ("orderQueue");
-var cache = builder.AddRedis("catalogCache");
 
 var theApi = builder.AddProject<Projects.ShoeMoney_API>("theApi")
-  .WithReference(cache)
   .WithReference(queue)
   .WithReference(connectionString);
 

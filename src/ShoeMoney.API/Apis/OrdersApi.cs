@@ -1,17 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using static Microsoft.AspNetCore.Http.TypedResults;
+﻿using System.Text;
+using System.Text.Json;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
+using MinimalApis.Discovery;
+using MinimalApis.FluentValidation;
+using RabbitMQ.Client;
 using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
 
-using WilderMinds.MinimalApiDiscovery;
-using WilderMinds.MinimalApis.FluentValidation;
-using EFCore.BulkExtensions;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Mapster;
-using Microsoft.AspNetCore.Connections;
-using RabbitMQ.Client;
-using System.Text.Json;
-using System.Text;
+using static Microsoft.AspNetCore.Http.TypedResults;
 
 namespace ShoeMoney.API.Apis;
 

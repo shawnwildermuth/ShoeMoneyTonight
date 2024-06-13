@@ -11,30 +11,22 @@ using ShoeMoney.Models;
 
 namespace ShoeMoney.OrderProcessing;
 
-public class OrderProcessingWorker : IHostedService, IDisposable
+public class OrderProcessingWorker(
+  ILogger<OrderProcessingWorker> logger,
+  IConnection connection,
+  IServiceProvider services)
+  : IHostedService, IDisposable
 {
-  private readonly ILogger<OrderProcessingWorker> _logger;
-  private readonly ConnectionFactory _factory;
-  private readonly ShoeContext _context;
-  private readonly IConnection _connection;
-  private readonly IModel _channel;
-
-  public OrderProcessingWorker(ILogger<OrderProcessingWorker> logger,
-    ConnectionFactory factory,
-    ShoeContext context)
-  {
-    _logger = logger;
-    _factory = factory;
-    _context = context;
-    _connection = _factory.CreateConnection();
-    _channel = _connection.CreateModel();
-
-    _channel.QueueDeclare(ShoeConstants.OrderQueueName);
-    _channel.QueueDeclare(ShoeConstants.ErrorQueueName);
-  }
+  IModel? _channel;
 
   public Task StartAsync(CancellationToken stoppingToken)
   {
+
+    _channel = connection.CreateModel();
+
+    _channel.QueueDeclare(ShoeConstants.OrderQueueName);
+    _channel.QueueDeclare(ShoeConstants.ErrorQueueName);
+
     stoppingToken.Register(() => Stop());
 
     var consumer = new EventingBasicConsumer(_channel);
@@ -61,7 +53,7 @@ public class OrderProcessingWorker : IHostedService, IDisposable
 
       if (model is not null)
       {
-        _logger.LogInformation("Retrieved Order from Queue");
+        logger.LogInformation("Retrieved Order from Queue");
 
         // Remove the products so we don't try to insert them
         foreach (var item in model.Items)
@@ -69,11 +61,14 @@ public class OrderProcessingWorker : IHostedService, IDisposable
           if (item.Product is not null) item.Product = null;
         }
 
-        _context.Add(model);
+        using var scope = services.CreateScope();
 
-        if (await _context.SaveChangesAsync() == 0)
+        var context = scope.ServiceProvider.GetRequiredService<ShoeContext>();
+        context.Add(model);
+
+        if (await context.SaveChangesAsync() == 0)
         {
-          _logger.LogError($"No changes when adding order");
+          logger.LogError($"No changes when adding order");
           SendError("Could not process Order");
         }
       }
@@ -81,7 +76,7 @@ public class OrderProcessingWorker : IHostedService, IDisposable
     }
     catch (Exception ex)
     {
-      _logger.LogError($"Error during Order process: {ex}");
+      logger.LogError($"Error during Order process: {ex}");
       SendError("Error during Order process", ex);
     }
 
@@ -97,7 +92,7 @@ public class OrderProcessingWorker : IHostedService, IDisposable
     var json = JsonSerializer.Serialize(message);
     var body = Encoding.UTF8.GetBytes(json);
     _channel.BasicPublish("", ShoeConstants.ErrorQueueName, null, body);
-    _logger.LogInformation("Error Reported");
+    logger.LogInformation("Error Reported");
   }
 
   public void Dispose()
@@ -108,8 +103,7 @@ public class OrderProcessingWorker : IHostedService, IDisposable
 
   void Stop()
   {
-    _channel.Dispose();
-    _connection.Dispose();
+    _channel?.Dispose();
   }
 
 }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WilderMinds.MinimalApiDiscovery;
+using MinimalApis.Discovery;
 using ShoeMoney.Data;
 using ShoeMoney.Data.Seeding;
 using FluentValidation;

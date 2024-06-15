@@ -7,10 +7,7 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddHostedService<OrderProcessingWorker>();
 
-builder.Services.AddDbContext<ShoeContext>(opt =>
-{
-  opt.UseSqlServer(builder.Configuration.GetConnectionString("ShoeMoneyDb"));
-});
+builder.AddSqlServerDbContext<ShoeContext>("theDb");
 
 builder.AddRabbitMQClient("orderQueue");
 

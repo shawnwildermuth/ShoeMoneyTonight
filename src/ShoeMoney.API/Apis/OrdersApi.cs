@@ -92,7 +92,7 @@ public class OrdersApi : IApi
     var body = Encoding.UTF32.GetBytes(json);
     channel.BasicPublish("", ShoeConstants.OrderQueueName, null, body);
 
-    return Ok();
+    return Created();
 
   }
 

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
     <PackageReference Include="Aspire.RabbitMQ.Client" Version="8.0.1" />
     <PackageReference Include="Aspire.StackExchange.Redis" Version="8.0.1" />
     <PackageReference Include="Mapster" Version="7.4.0" />

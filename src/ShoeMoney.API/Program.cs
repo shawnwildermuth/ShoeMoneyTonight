@@ -9,10 +9,9 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddRabbitMQClient("orderQueue");
-builder.Services.AddDbContext<ShoeContext>(opt =>
-{
-  opt.UseSqlServer(builder.Configuration.GetConnectionString("ShoeMoneyDb"));
-});
+
+builder.AddSqlServerDbContext<ShoeContext>("theDb");
+
 
 builder.Services.AddTransient<Seeder>();
 

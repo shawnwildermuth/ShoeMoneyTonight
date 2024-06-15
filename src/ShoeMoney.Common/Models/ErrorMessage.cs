@@ -8,6 +8,6 @@ namespace ShoeMoney.Models;
 public class ErrorMessage
 {
   public required string Message { get; set; }
-  public Exception? Exception { get; set; }
+  public string? ExceptionMessage { get; set; }
   public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }

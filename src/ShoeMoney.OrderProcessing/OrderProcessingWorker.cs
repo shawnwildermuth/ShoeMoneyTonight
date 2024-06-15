@@ -24,8 +24,8 @@ public class OrderProcessingWorker(
 
     _channel = connection.CreateModel();
 
-    _channel.QueueDeclare(ShoeConstants.OrderQueueName);
-    _channel.QueueDeclare(ShoeConstants.ErrorQueueName);
+    _channel.QueueDeclare(ShoeConstants.OrderQueueName, false, false, false);
+    _channel.QueueDeclare(ShoeConstants.ErrorQueueName, false, false, false);
 
     stoppingToken.Register(() => Stop());
 
@@ -48,7 +48,7 @@ public class OrderProcessingWorker(
   {
     try
     {
-      var json = Encoding.UTF8.GetString(args.Body.Span);
+      var json = Encoding.UTF32.GetString(args.Body.Span);
       var model = JsonSerializer.Deserialize<Order>(json);
 
       if (model is not null)
@@ -87,7 +87,7 @@ public class OrderProcessingWorker(
     var message = new ErrorMessage()
     {
       Message = error,
-      Exception = ex
+      ExceptionMessage = ex?.Message
     };
     var json = JsonSerializer.Serialize(message);
     var body = Encoding.UTF8.GetBytes(json);

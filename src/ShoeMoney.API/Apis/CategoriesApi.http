@@ -1,3 +1,8 @@
-GET {{$projectUrl}}/api/categories
+@projectUrl=http://localhost:8080
+
+GET {{projectUrl}}/api/categories
 ###
-GET {{$projectUrl}}/api/categories/3/products
+GET {{projectUrl}}/api/categories/3/products
+
+###
+GET {{projectUrl}}/health

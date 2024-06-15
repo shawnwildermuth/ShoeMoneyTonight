@@ -1,10 +1,16 @@
 ﻿using System.Text;
 using System.Text.Json;
+
 using Mapster;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using MinimalApis.Discovery;
 using MinimalApis.FluentValidation;
+
 using RabbitMQ.Client;
+
 using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
 
@@ -74,16 +80,15 @@ public class OrdersApi : IApi
     return Ok(order);
   }
 
-  public static IResult CreateOrder(ShoeContext context, 
-    ConnectionFactory connectionFactory, 
-    Order model)
+  public static IResult CreateOrder(ShoeContext context,
+    IConnection connection,
+    [FromBody] Order model)
   {
 
     var json = JsonSerializer.Serialize(model);
 
-    using var conn = connectionFactory.CreateConnection();
-    using var channel = conn.CreateModel();
-    channel.QueueDeclare(ShoeConstants.OrderQueueName, true);
+    using var channel = connection.CreateModel();
+    channel.QueueDeclare(ShoeConstants.OrderQueueName, false, false, false);
     var body = Encoding.UTF32.GetBytes(json);
     channel.BasicPublish("", ShoeConstants.OrderQueueName, null, body);
 

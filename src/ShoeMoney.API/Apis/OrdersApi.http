@@ -1,8 +1,10 @@
-GET {{$projectUrl}}/api/orders
+@projectUrl=http://localhost:5105
+
+GET {{projectUrl}}/api/orders
 ###
-GET {{$projectUrl}}/api/orders/4
+GET {{projectUrl}}/api/orders/4
 ###
-POST {{$projectUrl}}/api/orders
+POST {{projectUrl}}/api/orders
 Content-Type: application/json
 
 {
@@ -21,7 +23,7 @@ Content-Type: application/json
 }
 
 ###
-PUT {{$projectUrl}}/api/orders/2
+PUT {{projectUrl}}/api/orders/2
 Content-Type: application/json
 
 {
@@ -65,4 +67,4 @@ Content-Type: application/json
   }
 
 ###
-DELETE {{$projectUrl}}/api/orders/3
+DELETE {{projectUrl}}/api/orders/3

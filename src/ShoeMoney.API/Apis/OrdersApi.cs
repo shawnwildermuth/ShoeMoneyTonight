@@ -1,13 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using static Microsoft.AspNetCore.Http.TypedResults;
+﻿using System.Text;
+using System.Text.Json;
+
+using Mapster;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+using MinimalApis.Discovery;
+using MinimalApis.FluentValidation;
+
+using RabbitMQ.Client;
+
 using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
 
-using WilderMinds.MinimalApiDiscovery;
-using WilderMinds.MinimalApis.FluentValidation;
-using EFCore.BulkExtensions;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Mapster;
+using static Microsoft.AspNetCore.Http.TypedResults;
 
 namespace ShoeMoney.API.Apis;
 
@@ -70,26 +77,23 @@ public class OrdersApi : IApi
       .FirstOrDefaultAsync();
 
     if (order is null) return NotFound();
-
     return Ok(order);
   }
 
-  public static async Task<IResult> CreateOrder(ShoeContext context, Order model)
+  public static IResult CreateOrder(ShoeContext context,
+    IConnection connection,
+    [FromBody] Order model)
   {
-    // Remove the products so we don't try to insert them
-    foreach (var item in model.Items)
-    {
-      if (item.Product is not null) item.Product = null;
-    }
 
-    context.Add(model);
+    var json = JsonSerializer.Serialize(model);
 
-    if (await context.SaveChangesAsync() > 0)
-    {
-      return Created($"/api/orders/{model.Id}", model);
-    }
+    using var channel = connection.CreateModel();
+    channel.QueueDeclare(ShoeConstants.OrderQueueName, false, false, false);
+    var body = Encoding.UTF32.GetBytes(json);
+    channel.BasicPublish("", ShoeConstants.OrderQueueName, null, body);
 
-    return BadRequest();
+    return Ok();
+
   }
 
   public static async Task<IResult> UpdateOrder(ShoeContext context, int id, Order model)

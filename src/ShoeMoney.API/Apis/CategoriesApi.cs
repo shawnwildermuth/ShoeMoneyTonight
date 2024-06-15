@@ -3,7 +3,7 @@
 using ShoeMoney.Data;
 using ShoeMoney.Data.Entities;
 
-using WilderMinds.MinimalApiDiscovery;
+using MinimalApis.Discovery;
 
 namespace ShoeMoney.API.Apis;
 

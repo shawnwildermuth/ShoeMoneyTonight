@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WilderMinds.MinimalApiDiscovery;
+using MinimalApis.Discovery;
 using ShoeMoney.Data;
 using ShoeMoney.Data.Seeding;
 using FluentValidation;
@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddRabbitMQClient("orderQueue");
 builder.Services.AddDbContext<ShoeContext>(opt =>
 {
   opt.UseSqlServer(builder.Configuration.GetConnectionString("ShoeMoneyDb"));

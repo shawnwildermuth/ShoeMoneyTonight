@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-processing
+  labels:
+    app: order-processing
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-processing
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: order-processing
+    spec:
+      containers:
+      - name: order-processing
+        image: order-processing:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: order-processing-env
+        - secretRef:
+            name: order-processing-secrets
+      terminationGracePeriodSeconds: 180

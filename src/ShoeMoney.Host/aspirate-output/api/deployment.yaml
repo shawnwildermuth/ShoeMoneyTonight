@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: api:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        envFrom:
+        - configMapRef:
+            name: api-env
+        - secretRef:
+            name: api-secrets
+      terminationGracePeriodSeconds: 180

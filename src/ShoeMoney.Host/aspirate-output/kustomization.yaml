@@ -1,0 +1,12 @@
+resources:
+- order-queue
+- sqlserver
+- api
+- order-processing
+- store
+- dashboard.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+

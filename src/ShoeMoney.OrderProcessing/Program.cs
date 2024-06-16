@@ -7,9 +7,9 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddHostedService<OrderProcessingWorker>();
 
-builder.AddSqlServerDbContext<ShoeContext>("theDb");
+builder.AddSqlServerDbContext<ShoeContext>("thedb");
 
-builder.AddRabbitMQClient("orderQueue");
+builder.AddRabbitMQClient("order-queue");
 
 var host = builder.Build();
 host.Run();

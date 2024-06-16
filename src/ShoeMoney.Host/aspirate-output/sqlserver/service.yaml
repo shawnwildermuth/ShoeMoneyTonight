@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlserver
+spec:
+  type: ClusterIP
+  selector:
+    app: sqlserver
+  ports:
+  - name: tcp
+    port: 1433
+    targetPort: 1433

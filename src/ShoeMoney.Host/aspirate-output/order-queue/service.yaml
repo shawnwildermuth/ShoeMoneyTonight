@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-queue
+spec:
+  type: ClusterIP
+  selector:
+    app: order-queue
+  ports:
+  - name: tcp
+    port: 5672
+    targetPort: 5672

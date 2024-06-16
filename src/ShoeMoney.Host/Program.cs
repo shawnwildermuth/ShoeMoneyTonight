@@ -2,21 +2,22 @@ using Microsoft.Extensions.Configuration;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var queue = builder.AddRabbitMQ("orderQueue");
-var sql = builder.AddSqlServer("sqlserver");
-var db = sql.AddDatabase("theDb");
+var queue = builder.AddRabbitMQ("order-queue");
+var db = builder.AddSqlServer("sqlserver")
+  .AddDatabase("thedb");
 
-var theApi = builder.AddProject<Projects.ShoeMoney_API>("theApi")
+var theApi = builder.AddProject<Projects.ShoeMoney_API>("api")
+  .WithExternalHttpEndpoints()
   .WithReference(db)
   .WithReference(queue);
 
-builder.AddProject<Projects.ShoeMoney_OrderProcessing>("orderProcessing")
+builder.AddProject<Projects.ShoeMoney_OrderProcessing>("order-processing")
   .WithReference(db)
   .WithReference(queue);
 
 builder.AddNpmApp("store", "../shoemoney.store/", "dev")
   .WithReference(theApi)
-  .WithEndpoint(targetPort: 5173, scheme: "http", env: "PORT")
+  .WithExternalHttpEndpoints()
   .PublishAsDockerFile();
 
 builder.Build().Run();

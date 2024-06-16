@@ -8,9 +8,9 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddRabbitMQClient("orderQueue");
+builder.AddRabbitMQClient("order-queue");
 
-builder.AddSqlServerDbContext<ShoeContext>("theDb");
+builder.AddSqlServerDbContext<ShoeContext>("thedb");
 
 
 builder.Services.AddTransient<Seeder>();

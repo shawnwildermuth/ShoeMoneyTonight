@@ -1,0 +1,1 @@
+import{d as t,c as r,f as a,F as n,j as l,m as c,l as e,t as m}from"./index-BM_g7QBN.js";const p={key:0,class:"text-error"},d=t({__name:"ZodError",props:{errors:{}},setup(u){return(s,_)=>s.errors?(e(),r("div",p,[a("ul",null,[(e(!0),r(n,null,l(s.errors._errors,o=>(e(),r("li",null,m(o),1))),256))])])):c("",!0)}});export{d as _};

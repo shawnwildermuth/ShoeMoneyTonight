@@ -1,0 +1,1 @@
+let r=new Intl.NumberFormat("language",{style:"currency",currency:"USD"});function n(e){return typeof e=="number"?r.format(e):r.format(Number(e))}function o(e){return`${(typeof e=="number"?e:Number(e)).toFixed(2)}%`}export{n as m,o as p};

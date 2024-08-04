@@ -80,20 +80,24 @@ public class OrdersApi : IApi
     return Ok(order);
   }
 
-  public static IResult CreateOrder(ShoeContext context,
-    IConnection connection,
-    [FromBody] Order model)
+  public static async Task<IResult> CreateOrder(ShoeContext context,
+    Order model)
   {
 
-    var json = JsonSerializer.Serialize(model);
+    // Remove the products so we don't try to insert them
+    foreach (var item in model.Items)
+    {
+      if (item.Product is not null) item.Product = null;
+    }
 
-    using var channel = connection.CreateModel();
-    channel.QueueDeclare(ShoeConstants.OrderQueueName, false, false, false);
-    var body = Encoding.UTF32.GetBytes(json);
-    channel.BasicPublish("", ShoeConstants.OrderQueueName, null, body);
+    context.Add(model);
 
-    return Created();
+    if (await context.SaveChangesAsync() > 0)
+    {
+      return Created($"/api/orders/{model.Id}", model);
+    }
 
+    return BadRequest();
   }
 
   public static async Task<IResult> UpdateOrder(ShoeContext context, int id, Order model)

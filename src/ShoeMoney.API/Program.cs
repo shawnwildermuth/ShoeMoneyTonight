@@ -9,10 +9,7 @@ using ShoeMoney;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddRabbitMQClient("order-queue");
-
-builder.AddSqlServerDbContext<ShoeContext>("thedb");
-
+builder.AddSqlServerDbContext<ShoeContext>("ShoeMoneyDb");
 
 builder.Services.AddTransient<Seeder>();
 

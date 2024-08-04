@@ -17,6 +17,7 @@ builder.AddProject<Projects.ShoeMoney_OrderProcessing>("order-processing")
 
 builder.AddNpmApp("store", "../shoemoney.store/", "dev")
   .WithReference(theApi)
+  .WithHttpEndpoint(env: "PORT")
   .WithExternalHttpEndpoints()
   .PublishAsDockerFile();
 

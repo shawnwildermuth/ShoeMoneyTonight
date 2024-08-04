@@ -5,6 +5,7 @@ using ShoeMoney.Data.Seeding;
 using FluentValidation;
 using ShoeMoney.Validators;
 using System.Text.Json.Serialization;
+using ShoeMoney;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddCors(cfg => cfg.AddDefaultPolicy(bldr =>
   bldr.AllowAnyOrigin();
   bldr.AllowAnyMethod();
 }));
+
+builder.Configure();
 
 var app = builder.Build();
 

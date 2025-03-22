@@ -21,7 +21,9 @@ function lineTotal(item: OrderItem) {
 const total = computed(() => sum(cart.items, i => lineTotal(i)));
 
 async function submitOrder() {
-  await cart.processOrder();
+  if (await cart.processOrder()) {
+    router.push("/");
+  }
 }
 
 </script>

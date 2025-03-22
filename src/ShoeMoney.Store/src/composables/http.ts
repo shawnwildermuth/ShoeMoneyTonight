@@ -32,6 +32,8 @@ async function post<T>(url: string, content: T) {
 
     if (result.status === 201) {
       return result.data;
+    } else if (result.status === 202) {
+      return true;
     } else {
       store.error = `Failed to execute POST: ${url}`;
       return null;

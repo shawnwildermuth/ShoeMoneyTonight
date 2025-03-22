@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Microsoft.EntityFrameworkCore;
 using EFCore.BulkExtensions;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace ShoeMoney.Data.Seeding;
 public class Seeder(ShoeContext context)
@@ -21,7 +14,14 @@ public class Seeder(ShoeContext context)
 
       strategy.Execute(() =>
       {
-        context.BulkSaveChanges();
+        try
+        {
+          context.BulkSaveChanges();
+        }
+        catch (Exception ex)
+        {
+          var msg = ex.Message;
+        }
       });
     }
   }

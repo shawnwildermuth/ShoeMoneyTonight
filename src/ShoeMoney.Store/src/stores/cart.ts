@@ -77,6 +77,7 @@ async function processOrder() {
   if (result) {
     order.value = undefined;
   }
+  return result;
 }
 
 export const useCart = defineStore('cart', () => {

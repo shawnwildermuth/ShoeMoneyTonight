@@ -1,22 +1,23 @@
-using Microsoft.Extensions.Configuration;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
-var connectionString = builder.AddConnectionString("ShoeMoneyDb");
-var queue = builder.AddRabbitMQ("orderQueue");
-var sql = builder.AddSqlServer("database");
+var userNameParameter = builder.AddParameter("RabbitUserName");
+var passwordParameter = builder.AddParameter("RabbitPassword", true);
 
-var theApi = builder.AddProject<Projects.ShoeMoney_API>("theApi")
+var queue = builder.AddRabbitMQ("OrderQueue", userNameParameter, passwordParameter)
+    .WithManagementPlugin();
+
+var sql = builder.AddSqlServer("Database")
+  .AddDatabase("ShoeMoney");
+
+var theApi = builder.AddProject<Projects.ShoeMoney_API>("TheApi")
   .WithReference(sql)
-  .WithReference(queue)
-  .WithReference(connectionString);
+  .WithReference(queue);
 
-builder.AddProject<Projects.ShoeMoney_OrderProcessing>("orderProcessing")
+builder.AddProject<Projects.ShoeMoney_OrderProcessing>("OrderProcessing")
   .WithReference(sql)
-  .WithReference(queue)
-  .WithReference(connectionString);
+  .WithReference(queue);
 
-builder.AddNpmApp("store", "../shoemoney.store/", "dev")
+builder.AddNpmApp("FrontEnd", "../shoemoney.store/", "dev")
   .WithReference(theApi)
   .WithEndpoint(targetPort: 5173, scheme: "http", env: "PORT")
   .PublishAsDockerFile();

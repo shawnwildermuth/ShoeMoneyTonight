@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.EnableMonitoring();
 
+builder.AddRedisDistributedCache("Cache");
 builder.AddRabbitMQClient("OrderQueue");
 builder.Services.AddDbContext<ShoeContext>(opt =>
 {
